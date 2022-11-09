@@ -2,6 +2,7 @@
 #include <fstream>
 #include <windows.h>
 #include <cstdlib>
+//#include <ios>
 
 // Задача 1. Знакомство с Visual Studio 2022. Циклический сдвиг в массиве
 
@@ -13,10 +14,10 @@ int* create_arr(const int size_row)
 }
 
 // Функция печати массива в файл
-void print_arr(int* arr, const int arr_size_row, int cursor_position)
+void print_arr(int* arr, const int arr_size_row)
 {
-    std::ofstream fileOut("out.txt");
-    fileOut.seekp(cursor_position);
+
+    std::ofstream fileOut("out.txt", std::ios_base::app);
     fileOut << "Размер массива: " << arr_size_row << std::endl << "Массив:\t";
 
     fileOut << "[";
@@ -77,7 +78,7 @@ int main()
     }
     else
     {
-        std::cout << "Считываем данные из файла in.txt ..." << std::endl;
+        std::cout << "Данные из файла in.txt считаны." << std::endl;
     }
     
     int arr1_size_row = 0;
@@ -92,23 +93,21 @@ int main()
     fileIn.seekg(sizeof(arr1[0]) * arr1_size_row - 1);
     fileIn >> arr2_size_row; // Считываем из файла размер массива 2.
     cursor_position_in = fileIn.tellg();
+    fileIn.close();
     
     int* arr2 = create_arr(arr2_size_row); //создаем динамический массив 2.
     fill_arr(arr2, arr2_size_row, cursor_position_in);
     shiftRight_arr(arr2, arr2_size_row);
-    
-    
-    int cursor_position_out = 0;
-
-    print_arr(arr2, arr2_size_row, cursor_position_out);
-    std::ofstream fileOut("out.txt");
-    fileOut.seekp(sizeof(arr2[0]) * arr2_size_row - 1);
-    cursor_position_out = fileOut.tellp();
-
-    print_arr(arr1, arr1_size_row, cursor_position_out);
-
-    fileIn.close();
+ 
+    std::ofstream fileOut("out.txt", std::ios_base::trunc);
     fileOut.close();
+
+    print_arr(arr2, arr2_size_row);
+    print_arr(arr1, arr1_size_row);
+
+    std::cout << "Результат работы программы смотри в файле out.txt." << std::endl;
+
+    
     delete[] arr1; // Удаление динамического массива
     delete[] arr2; // Удаление динамического массива
 }
