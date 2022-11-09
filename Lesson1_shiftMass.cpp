@@ -82,32 +82,32 @@ int main()
     }
     
     int arr1_size_row = 0;
-    fileIn >> arr1_size_row; // Считываем из файла размер массива 1.
-    int cursor_position_in = fileIn.tellg();
+    fileIn >> arr1_size_row; // Считываем из файла размер массива 1
+    int cursor_position_in = fileIn.tellg(); // Запоминаем положение указателя в файле in.txt
     
-    int* arr1 = create_arr(arr1_size_row); //создаем динамический массив 1.
-    fill_arr(arr1, arr1_size_row, cursor_position_in);
-    shiftLeft_arr(arr1, arr1_size_row);
+    int* arr1 = create_arr(arr1_size_row); //Cоздаем динамический массив 1
+    fill_arr(arr1, arr1_size_row, cursor_position_in); // Заполняем динамический массив 1
+    shiftLeft_arr(arr1, arr1_size_row); // Функция сдвига массива 1 влево
     
     int arr2_size_row = 0;
-    fileIn.seekg(sizeof(arr1[0]) * arr1_size_row - 1);
-    fileIn >> arr2_size_row; // Считываем из файла размер массива 2.
-    cursor_position_in = fileIn.tellg();
+    fileIn.seekg(sizeof(arr1[0]) * arr1_size_row - 1); // Перемещаем указатель в файле in.txt на позицию считывания размера массива 2
+    fileIn >> arr2_size_row; // Считываем из файла размер массива 2
+    cursor_position_in = fileIn.tellg(); // Запоминаем положение указателя в файле in.txt
     fileIn.close();
     
-    int* arr2 = create_arr(arr2_size_row); //создаем динамический массив 2.
-    fill_arr(arr2, arr2_size_row, cursor_position_in);
-    shiftRight_arr(arr2, arr2_size_row);
+    int* arr2 = create_arr(arr2_size_row); // Cоздаем динамический массив 2
+    fill_arr(arr2, arr2_size_row, cursor_position_in); // Заполняем динамический массив 2
+    shiftRight_arr(arr2, arr2_size_row); // Функция сдвига массива 2 вправо
  
-    std::ofstream fileOut("out.txt", std::ios_base::trunc);
+    std::ofstream fileOut("out.txt", std::ios_base::trunc); // Очищаем файл out.txt
     fileOut.close();
 
-    print_arr(arr2, arr2_size_row);
-    print_arr(arr1, arr1_size_row);
+    print_arr(arr2, arr2_size_row); // Выводим массив 2
+    print_arr(arr1, arr1_size_row); // Выводим массив 1
 
     std::cout << "Результат работы программы смотри в файле out.txt." << std::endl;
 
     
-    delete[] arr1; // Удаление динамического массива
-    delete[] arr2; // Удаление динамического массива
+    delete[] arr1; // Удаление динамического массива 1
+    delete[] arr2; // Удаление динамического массива 2
 }
