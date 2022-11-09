@@ -12,16 +12,21 @@ int* create_arr(const int size_row)
     return arr;
 }
 
-// Функция печати массива
-void print_arr(int* arr, const int arr_size_row)
+// Функция печати массива в файл
+void print_arr(int* arr, const int arr_size_row, int cursor_position)
 {
-    std::cout << "[";
+    std::ofstream fileOut("out.txt");
+    fileOut.seekp(cursor_position);
+    fileOut << "Размер массива: " << arr_size_row << std::endl << "Массив:\t";
+
+    fileOut << "[";
     for (int i = 0; i < arr_size_row - 1; i++)
     {
-        std::cout << arr[i] << ", ";
+        fileOut << arr[i] << ", ";
     }
-    std::cout << arr[arr_size_row - 1];
-    std::cout << "]" << std::endl;
+    fileOut << arr[arr_size_row - 1];
+    fileOut << "]" << std::endl;
+    fileOut.close();
 }
 
 // Заполняем массив из файла
@@ -60,8 +65,6 @@ void shiftRight_arr(int* arr, const int arr_size_row)
 }
 
 
-
-
 int main()
 {
     setlocale(LC_ALL, "Russian");
@@ -76,53 +79,36 @@ int main()
     {
         std::cout << "Считываем данные из файла in.txt ..." << std::endl;
     }
-    Sleep(1000); //Задержка инфо на экране консоли
-    system("cls"); //Очищаем консоль
-
+    
     int arr1_size_row = 0;
-
     fileIn >> arr1_size_row; // Считываем из файла размер массива 1.
-    int cursor_position = fileIn.tellg();
-    std::cout << "cursor_position1: " << fileIn.tellg() << ". " << std::endl;
+    int cursor_position_in = fileIn.tellg();
     
-
     int* arr1 = create_arr(arr1_size_row); //создаем динамический массив 1.
-
-    std::cout << "Размер массива 1: " << arr1_size_row << ". " << std::endl << "Массив 1 из файла:\t\t";
-    
-    fill_arr(arr1, arr1_size_row, cursor_position);
-    print_arr(arr1, arr1_size_row); //печатаем исходный массив 1.
-    
-    std::cout << "Массив 1 со сдвигом влево:\t";
+    fill_arr(arr1, arr1_size_row, cursor_position_in);
     shiftLeft_arr(arr1, arr1_size_row);
-    print_arr(arr1, arr1_size_row);
-
+    
     int arr2_size_row = 0;
-    
-    fileIn.seekg(arr1_size_row);
-    int cursor_position2 = fileIn.tellg();
-    
-    std::cout << "cursor_position2: " << fileIn.tellg() << ". " << cursor_position2 << std::endl;
+    fileIn.seekg(sizeof(arr1[0]) * arr1_size_row - 1);
     fileIn >> arr2_size_row; // Считываем из файла размер массива 2.
+    cursor_position_in = fileIn.tellg();
     
+    int* arr2 = create_arr(arr2_size_row); //создаем динамический массив 2.
+    fill_arr(arr2, arr2_size_row, cursor_position_in);
+    shiftRight_arr(arr2, arr2_size_row);
+    
+    
+    int cursor_position_out = 0;
 
-    std::cout << "arr2_size_row: " << arr2_size_row << ". " << std::endl;
-  
+    print_arr(arr2, arr2_size_row, cursor_position_out);
+    std::ofstream fileOut("out.txt");
+    fileOut.seekp(sizeof(arr2[0]) * arr2_size_row - 1);
+    cursor_position_out = fileOut.tellp();
 
-
-
-
-
-
-    /*std::cout << "Массив 2 со сдвигом вправо:\t";
-    shiftRight_arr(arr1, arr1_size_row);
-    print_arr(arr1, arr1_size_row);*/
-
-
+    print_arr(arr1, arr1_size_row, cursor_position_out);
 
     fileIn.close();
+    fileOut.close();
     delete[] arr1; // Удаление динамического массива
-    //delete[] arr2; // Удаление динамического массива
-
-
+    delete[] arr2; // Удаление динамического массива
 }
