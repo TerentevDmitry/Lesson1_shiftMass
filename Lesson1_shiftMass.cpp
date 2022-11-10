@@ -83,10 +83,22 @@ int main()
     
     int arr1_size_row = 0;
     fileIn >> arr1_size_row; // Считываем из файла размер массива 1
+    std::cout << "fileIn.tellg() = " << fileIn.tellg() << std::endl;
     int cursor_position_in = fileIn.tellg(); // Запоминаем положение указателя в файле in.txt
-    
+    std::cout << "cursor_position_in = " << cursor_position_in << std::endl;
+
+
     int* arr1 = create_arr(arr1_size_row); //Cоздаем динамический массив 1
     fill_arr(arr1, arr1_size_row, cursor_position_in); // Заполняем динамический массив 1
+
+    for (int i = 0; i < arr1_size_row; i++)
+    {
+        std::cout << arr1[i] << " ";
+    }
+    std::cout << std::endl;
+
+
+
     shiftLeft_arr(arr1, arr1_size_row); // Функция сдвига массива 1 влево
     
     int arr2_size_row = 0;
