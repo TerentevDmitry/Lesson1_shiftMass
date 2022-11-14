@@ -1,7 +1,5 @@
 ﻿#include <iostream>
 #include <fstream>
-#include <windows.h>
-#include <cstdlib>
 
 // Задача 1. Знакомство с Visual Studio 2022. Циклический сдвиг в массиве
 
@@ -15,7 +13,6 @@ int* create_arr(const int size_row)
 // Функция печати массива в файл
 void print_arr(int* arr, const int arr_size_row)
 {
-
     std::ofstream fileOut("out.txt", std::ios_base::app);
     fileOut << "Размер массива: " << arr_size_row << std::endl << "Массив:\t";
 
@@ -30,9 +27,10 @@ void print_arr(int* arr, const int arr_size_row)
 }
 
 // Заполняем массив из файла
-void fill_arr(int* arr, const int arr_size_row) //, int cursor_position)
+void fill_arr(int* arr, const int arr_size_row)
 {
     std::ifstream fileIn("in.txt");
+    
     //fileIn.seekg(cursor_position);
 
     for (int i = 0; i < arr_size_row; i++)
@@ -67,7 +65,7 @@ void shiftRight_arr(int* arr, const int arr_size_row)
 
 int main()
 {
-    setlocale(LC_ALL, "Russian");
+    setlocale(LC_ALL, "Russian"); // Корректное отображение Кириллицы
 
     std::ifstream fileIn("in.txt"); // Открываем файл и проверяем удалось ли открыть
     if (!fileIn)
@@ -82,32 +80,27 @@ int main()
     
     int arr1_size_row = 0;
     fileIn >> arr1_size_row; // Считываем из файла размер массива 1
-    //std::cout << "fileIn.tellg() = " << fileIn.tellg() << std::endl;
-    int cursor_position_in = fileIn.tellg(); // Запоминаем положение указателя в файле in.txt
-    //std::cout << "cursor_position_in = " << cursor_position_in << std::endl;
-
-
+      
     int* arr1 = create_arr(arr1_size_row); //Cоздаем динамический массив 1
-    fill_arr(arr1, arr1_size_row, cursor_position_in); // Заполняем динамический массив 1
 
-    /*for (int i = 0; i < arr1_size_row; i++)
+    for (int i = 0; i < arr1_size_row; i++) //Заполняем динамический массив 1
     {
-        std::cout << arr1[i] << " ";
+        fileIn >> arr1[i];
     }
-    std::cout << std::endl;*/
 
-
-
-    shiftLeft_arr(arr1, arr1_size_row); // Функция сдвига массива 1 влево
-    
     int arr2_size_row = 0;
-    //fileIn.seekg(sizeof(arr1[0]) * arr1_size_row - 1); // Перемещаем указатель в файле in.txt на позицию считывания размера массива 2
     fileIn >> arr2_size_row; // Считываем из файла размер массива 2
-    //cursor_position_in = fileIn.tellg(); // Запоминаем положение указателя в файле in.txt
-    fileIn.close();
+
+    int* arr2 = create_arr(arr2_size_row); //Cоздаем динамический массив 2
     
-    int* arr2 = create_arr(arr2_size_row); // Cоздаем динамический массив 2
-    fill_arr(arr2, arr2_size_row); // Заполняем динамический массив 2
+    for (int i = 0; i < arr2_size_row; i++) //Заполняем динамический массив 2
+    {
+        fileIn >> arr2[i];
+    }
+    
+    fileIn.close(); // Закрываем файл in.txt
+    
+    shiftLeft_arr(arr1, arr1_size_row); // Функция сдвига массива 1 влево
     shiftRight_arr(arr2, arr2_size_row); // Функция сдвига массива 2 вправо
  
     std::ofstream fileOut("out.txt", std::ios_base::trunc); // Очищаем файл out.txt
@@ -118,7 +111,8 @@ int main()
 
     std::cout << "Результат работы программы смотри в файле out.txt." << std::endl;
 
-    
     delete[] arr1; // Удаление динамического массива 1
+    arr1 = nullptr; // Обнуление указателя на динамический массив 1
     delete[] arr2; // Удаление динамического массива 2
+    arr2 = nullptr; // Обнуление указателя на динамический массив 2
 }
