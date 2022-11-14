@@ -26,20 +26,6 @@ void print_arr(int* arr, const int arr_size_row)
     fileOut.close();
 }
 
-// Заполняем массив из файла
-void fill_arr(int* arr, const int arr_size_row)
-{
-    std::ifstream fileIn("in.txt");
-    
-    //fileIn.seekg(cursor_position);
-
-    for (int i = 0; i < arr_size_row; i++)
-    {
-        fileIn >> arr[i];
-    }
-    fileIn.close();   
-}
-
 // Функция сдвига массива влево
 void shiftLeft_arr(int* arr, const int arr_size_row)
 {
