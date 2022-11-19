@@ -52,6 +52,7 @@ void shiftRight_arr(int* arr, const int arr_size_row)
 int main()
 {
     setlocale(LC_ALL, "Russian"); // Корректное отображение Кириллицы
+    system("chcp 1251");
 
     std::ifstream fileIn("in.txt"); // Открываем файл и проверяем удалось ли открыть
     if (!fileIn)
@@ -95,7 +96,7 @@ int main()
     print_arr(arr2, arr2_size_row); // Выводим массив 2
     print_arr(arr1, arr1_size_row); // Выводим массив 1
 
-    std::cout << "Результат работы программы смотри в файле out.txt." << std::endl;
+    std::cout << "Результат работы программы смотри в файле out.txt" << std::endl;
 
     delete[] arr1; // Удаление динамического массива 1
     arr1 = nullptr; // Обнуление указателя на динамический массив 1
